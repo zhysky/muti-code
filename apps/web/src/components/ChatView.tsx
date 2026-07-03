@@ -1,6 +1,10 @@
+import { ArrowUp, Plus } from "lucide-react";
+import React from "react";
+import { buildToolActivities } from "../lib/tool-activity.js";
 import { productCopy } from "../lib/presentation.js";
 import type { ChatMessage, Model, TimelineEvent } from "../types.js";
 import { MarkdownContent } from "./MarkdownContent.js";
+import { ToolActivityList } from "./ToolActivityList.js";
 
 interface ChatViewProps {
   loading: boolean;
@@ -76,7 +80,7 @@ export function ChatView({
         />
         <div className="composerFooter">
           <button className="attachButton" type="button" onClick={onOpenDetails} aria-label="Open run details">
-            <span aria-hidden="true">+</span>
+            <Plus size={16} aria-hidden="true" />
           </button>
           <div className="composerControls">
             <select className="composerModel" value={model} onChange={(event) => onModelChange(event.target.value)} aria-label="Model">
@@ -91,7 +95,7 @@ export function ChatView({
               onClick={running ? onAbort : undefined}
               aria-label={running ? "Abort run" : "Send message"}
             >
-              {running ? <span className="spinner" aria-hidden="true" /> : "↑"}
+              {running ? <span className="spinner" aria-hidden="true" /> : <ArrowUp size={18} aria-hidden="true" />}
             </button>
           </div>
         </div>
@@ -110,21 +114,15 @@ function MessageBubble({
   onOpenRunDetails: (runId: string) => void;
 }) {
   const isUser = message.role === "user";
-  const toolCount = message.runId
-    ? events.filter((event) => event.runId === message.runId && (
-      event.type === "tool.started"
-      || event.type === "tool.completed"
-      || event.type === "command.started"
-      || event.type === "command.completed"
-      || event.type === "file.changed"
-    )).length
-    : 0;
+  const activities = !isUser && message.runId ? buildToolActivities(events, message.runId) : [];
   return (
     <article className={isUser ? "messageBubble user" : "messageBubble assistant"}>
-      {!isUser && toolCount > 0 && message.runId && (
-        <button className="toolChip" type="button" onClick={() => message.runId && onOpenRunDetails(message.runId)}>
-          <span aria-hidden="true">▸</span> 已执行 {toolCount} 个步骤
-        </button>
+      {!isUser && message.runId && (
+        <ToolActivityList
+          activities={activities}
+          runId={message.runId}
+          onOpenRunDetails={onOpenRunDetails}
+        />
       )}
       <div className="messageContent">
         {message.content

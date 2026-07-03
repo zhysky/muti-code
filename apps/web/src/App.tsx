@@ -77,7 +77,9 @@ export function App() {
     setActiveRunStatus("idle");
     setSidebarOpen(false);
     const messageResponse = await api.listMessages(next.id);
-    setMessages(messageResponse.messages.map(toChatMessage));
+    const nextMessages = messageResponse.messages.map(toChatMessage);
+    setMessages(nextMessages);
+    await loadRunEventsForMessages(nextMessages, []);
   }
 
   async function createSession() {
@@ -118,7 +120,6 @@ export function App() {
     const currentSession = session;
     setPrompt("");
     setError("");
-    setEvents([]);
     setDrawerOpen(false);
     setActiveRunStatus("running");
     setMessages((items) => [...items, {
@@ -194,6 +195,7 @@ export function App() {
     ]);
     const persistedMessages = messageResponse.messages.map(toChatMessage);
     setMessages((current) => mergePersistedChatMessages(persistedMessages, current));
+    await loadRunEventsForMessages(persistedMessages);
     setSessions(sessionsResponse.sessions);
     const latest = await api.getSession(target.id);
     setSession(latest);
@@ -214,6 +216,17 @@ export function App() {
     if (events.some((event) => event.runId === runId)) return;
     const response = await api.listRunEvents(runId);
     setEvents((items) => mergeTimelineEvents(items, response.events));
+  }
+
+  async function loadRunEventsForMessages(nextMessages: ChatMessage[], knownEvents = events) {
+    const knownRunIds = new Set(knownEvents.map((event) => event.runId));
+    const runIds = Array.from(new Set(nextMessages
+      .map((message) => message.runId)
+      .filter((runId): runId is string => Boolean(runId) && !knownRunIds.has(runId))));
+    if (!runIds.length) return;
+
+    const responses = await Promise.all(runIds.map((runId) => api.listRunEvents(runId)));
+    setEvents((items) => mergeTimelineEvents(items, responses.flatMap((response) => response.events)));
   }
 
   const curlExample = useMemo(() => {
