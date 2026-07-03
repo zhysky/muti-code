@@ -16,6 +16,8 @@ describe("remote deployment script", () => {
     expect(script).toContain("de.minakami-yuki.com");
     expect(script).toContain("git reset --hard");
     expect(script).toContain("docker compose --env-file .env -f deploy/docker-compose.yml up --build -d");
+    expect(script).toContain("DEPLOY_READY_RETRIES");
+    expect(script).toContain("wait_for_url");
     expect(script).toContain("listen ${PUBLIC_PORT} ssl");
     expect(script).toContain("/api/runtime");
   });

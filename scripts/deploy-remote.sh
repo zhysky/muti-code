@@ -10,6 +10,7 @@ PUBLIC_PORT="${PUBLIC_PORT:-18443}"
 PUBLIC_URL="${PUBLIC_URL:-https://${PUBLIC_HOST}:${PUBLIC_PORT}}"
 TLS_CERT_PATH="${TLS_CERT_PATH:-/etc/v2ray-agent/tls/${PUBLIC_HOST}.crt}"
 TLS_KEY_PATH="${TLS_KEY_PATH:-/etc/v2ray-agent/tls/${PUBLIC_HOST}.key}"
+DEPLOY_READY_RETRIES="${DEPLOY_READY_RETRIES:-60}"
 
 log() {
   printf '[deploy] %s\n' "$*"
@@ -27,6 +28,7 @@ remote_command=(
   "PUBLIC_PORT=$(quote "$PUBLIC_PORT")"
   "TLS_CERT_PATH=$(quote "$TLS_CERT_PATH")"
   "TLS_KEY_PATH=$(quote "$TLS_KEY_PATH")"
+  "DEPLOY_READY_RETRIES=$(quote "$DEPLOY_READY_RETRIES")"
   "bash -s"
 )
 
@@ -43,6 +45,23 @@ require_command() {
     printf '[remote] missing required command: %s\n' "$1" >&2
     exit 1
   fi
+}
+
+wait_for_url() {
+  url="$1"
+  label="$2"
+  last_error=""
+  for attempt in $(seq 1 "$DEPLOY_READY_RETRIES"); do
+    if response="$(curl -fsS "$url" 2>&1)"; then
+      printf '%s' "$response"
+      return 0
+    fi
+    last_error="$response"
+    log "waiting for ${label} (${attempt}/${DEPLOY_READY_RETRIES})"
+    sleep 2
+  done
+  printf '[remote] %s did not become ready: %s\n' "$label" "$last_error" >&2
+  return 1
 }
 
 read_minimax_key_from_file() {
@@ -149,16 +168,33 @@ log "building and restarting docker compose services"
 docker compose --env-file .env -f deploy/docker-compose.yml up --build -d
 
 log "checking local service health"
-curl -fsS http://127.0.0.1:3000/readyz >/dev/null
-runtime="$(curl -fsS http://127.0.0.1:5173/api/runtime)"
+wait_for_url http://127.0.0.1:3000/readyz readyz >/dev/null
+runtime="$(wait_for_url http://127.0.0.1:5173/api/runtime runtime)"
 printf '%s\n' "$runtime" | grep -q '"driver_mode":"real"'
 printf '%s\n' "$runtime" | grep -q '"minimax_ready":true'
 docker compose --env-file .env -f deploy/docker-compose.yml ps
 log "deployed $(git rev-parse --short HEAD)"
 REMOTE
 
+wait_for_url() {
+  url="$1"
+  label="$2"
+  last_error=""
+  for attempt in $(seq 1 "$DEPLOY_READY_RETRIES"); do
+    if response="$(curl -fsS "$url" 2>&1)"; then
+      printf '%s' "$response"
+      return 0
+    fi
+    last_error="$response"
+    log "waiting for ${label} (${attempt}/${DEPLOY_READY_RETRIES})"
+    sleep 2
+  done
+  printf '[deploy] %s did not become ready: %s\n' "$label" "$last_error" >&2
+  return 1
+}
+
 log "checking public endpoint ${PUBLIC_URL}"
-runtime="$(curl -fsS "${PUBLIC_URL}/api/runtime")"
+runtime="$(wait_for_url "${PUBLIC_URL}/api/runtime" public-runtime)"
 printf '%s\n' "$runtime" | grep -q '"driver_mode":"real"'
 printf '%s\n' "$runtime" | grep -q '"minimax_ready":true'
 printf '%s\n' "$runtime"
