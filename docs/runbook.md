@@ -46,6 +46,20 @@ curl http://localhost:3000/readyz
 podman compose -f deploy/docker-compose.yml ps
 ```
 
+## 远端部署
+
+默认把 `origin/master` 部署到 `de.minakami-yuki.com:/opt/muti-code`，目标机使用 Docker Compose，并在 Nginx 上维护 `18443` TLS 反代入口：
+
+```bash
+bash scripts/deploy-remote.sh
+```
+
+常用覆盖项：
+
+```bash
+DEPLOY_REF=origin/my-branch PUBLIC_PORT=18443 bash scripts/deploy-remote.sh
+```
+
 ## 权限配置
 
 - `read-only`：Gateway 拒绝写入，driver 不应产生 `file.changed`。

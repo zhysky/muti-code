@@ -47,6 +47,7 @@ services:
     environment:
       WEB_PORT: 5173
       GATEWAY_ORIGIN: http://gateway:3000
+      WEB_ALLOWED_HOSTS: ${WEB_ALLOWED_HOSTS:-de.minakami-yuki.com}
     depends_on:
       - gateway
 
