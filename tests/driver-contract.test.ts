@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { ClaudeDriver, CodexDriver, OpenCodeDriver, claudeMaxTurns } from "@agent-gateway/drivers";
 import type { AgentDriver, AgentEvent, AgentRunRequest } from "@agent-gateway/core";
 import { mkdtemp } from "node:fs/promises";
@@ -67,6 +67,141 @@ describe("driver contract", () => {
         process.env.MINIMAX_API_KEY = previousMiniMaxKey;
       } else {
         delete process.env.MINIMAX_API_KEY;
+      }
+    }
+  });
+
+  it("falls back to MiniMax Chat Completions when Codex Responses is rate limited", async () => {
+    const previousMiniMaxKey = process.env.MINIMAX_API_KEY;
+    const previousCodexHome = process.env.CODEX_HOME;
+    const workspacePath = await mkdtemp(path.join(os.tmpdir(), "driver-codex-minimax-"));
+    const codexHome = await mkdtemp(path.join(os.tmpdir(), "driver-codex-home-"));
+    process.env.MINIMAX_API_KEY = "test-key";
+    process.env.CODEX_HOME = codexHome;
+    const fetchMock = vi.fn(async (url: string | URL) => {
+      const target = String(url);
+      if (target.endsWith("/responses")) {
+        return new Response(JSON.stringify({
+          error: {
+            message: "rate limited",
+            code: "rate_limit_exceeded"
+          }
+        }), { status: 429 });
+      }
+      if (target.endsWith("/chat/completions")) {
+        return Response.json({
+          choices: [
+            {
+              message: {
+                content: "codex 部署验证通过"
+              }
+            }
+          ],
+          usage: {
+            total_tokens: 8
+          }
+        });
+      }
+      throw new Error(`unexpected fetch url: ${target}`);
+    });
+    const previousFetch = globalThis.fetch;
+    globalThis.fetch = fetchMock as typeof fetch;
+
+    try {
+      const events = await collect(new CodexDriver("real").start({
+        ...request("codex", workspacePath, "read-only", "部署验证"),
+        runtimeModel: "MiniMax-M3"
+      }));
+
+      expect(fetchMock).toHaveBeenCalledTimes(2);
+      expect(fetchMock.mock.calls[0]?.[0]).toContain("/responses");
+      expect(fetchMock.mock.calls[1]?.[0]).toContain("/chat/completions");
+      expect(events).toContainEqual({
+        type: "text.delta",
+        runId: "run_codex",
+        text: "codex 部署验证通过"
+      });
+      expect(events).toContainEqual({
+        type: "message.completed",
+        runId: "run_codex",
+        text: "codex 部署验证通过"
+      });
+      expect(events.at(-1)).toMatchObject({ type: "run.completed" });
+    } finally {
+      globalThis.fetch = previousFetch;
+      if (previousMiniMaxKey) {
+        process.env.MINIMAX_API_KEY = previousMiniMaxKey;
+      } else {
+        delete process.env.MINIMAX_API_KEY;
+      }
+      if (previousCodexHome) {
+        process.env.CODEX_HOME = previousCodexHome;
+      } else {
+        delete process.env.CODEX_HOME;
+      }
+    }
+  });
+
+  it("falls back to MiniMax Anthropic Messages when Codex Responses and Chat Completions are rate limited", async () => {
+    const previousMiniMaxKey = process.env.MINIMAX_API_KEY;
+    const previousCodexHome = process.env.CODEX_HOME;
+    const workspacePath = await mkdtemp(path.join(os.tmpdir(), "driver-codex-minimax-anthropic-"));
+    const codexHome = await mkdtemp(path.join(os.tmpdir(), "driver-codex-home-"));
+    process.env.MINIMAX_API_KEY = "test-key";
+    process.env.CODEX_HOME = codexHome;
+    const fetchMock = vi.fn(async (url: string | URL) => {
+      const target = String(url);
+      if (target.endsWith("/responses")) {
+        return new Response(JSON.stringify({ error: { code: "rate_limit_exceeded" } }), { status: 429 });
+      }
+      if (target.endsWith("/chat/completions")) {
+        return new Response(JSON.stringify({ error: { code: "rate_limit_exceeded" } }), { status: 429 });
+      }
+      if (target.endsWith("/v1/messages")) {
+        return Response.json({
+          content: [
+            {
+              type: "text",
+              text: "codex Anthropic 兜底验证通过"
+            }
+          ],
+          usage: {
+            output_tokens: 7
+          }
+        });
+      }
+      throw new Error(`unexpected fetch url: ${target}`);
+    });
+    const previousFetch = globalThis.fetch;
+    globalThis.fetch = fetchMock as typeof fetch;
+
+    try {
+      const events = await collect(new CodexDriver("real").start({
+        ...request("codex", workspacePath, "read-only", "部署验证"),
+        runtimeModel: "MiniMax-M3"
+      }));
+
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(fetchMock.mock.calls[0]?.[0]).toContain("/responses");
+      expect(fetchMock.mock.calls[1]?.[0]).toContain("/chat/completions");
+      expect(fetchMock.mock.calls[2]?.[0]).toContain("/v1/messages");
+      expect(events).toContainEqual({
+        type: "message.completed",
+        runId: "run_codex",
+        text: "codex Anthropic 兜底验证通过"
+      });
+      expect(events.at(-1)).toMatchObject({ type: "run.completed" });
+    } finally {
+      globalThis.fetch = previousFetch;
+      if (previousMiniMaxKey) {
+        process.env.MINIMAX_API_KEY = previousMiniMaxKey;
+      } else {
+        delete process.env.MINIMAX_API_KEY;
+      }
+      if (previousCodexHome) {
+        process.env.CODEX_HOME = previousCodexHome;
+      } else {
+        delete process.env.CODEX_HOME;
       }
     }
   });

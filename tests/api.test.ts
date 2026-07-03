@@ -138,7 +138,10 @@ describe("api integration", () => {
   it("ships a preview proxy config with the web image", async () => {
     const repoRoot = path.resolve(new URL(".", import.meta.url).pathname, "..");
     const dockerfile = await readFile(path.join(repoRoot, "apps", "web", "Dockerfile"), "utf8");
+    const previewConfig = await readFile(path.join(repoRoot, "apps", "web", "vite.preview.config.mjs"), "utf8");
     expect(dockerfile).toContain("vite.preview.config");
+    expect(previewConfig).toContain("allowedHosts");
+    expect(previewConfig).toContain("de.minakami-yuki.com");
   });
 
   it("shows a useful landing page at the API root", async () => {

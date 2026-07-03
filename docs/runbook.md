@@ -35,10 +35,7 @@ npm run dev:web
 ## Podman Compose
 
 ```bash
-source ~/.zshrc
-export AGENT_DRIVER_MODE=real
-export DOCKER_CONFIG=/tmp/codex-empty-docker-config
-podman compose -f deploy/docker-compose.yml up --build -d
+npm run compose:up
 ```
 
 健康检查：

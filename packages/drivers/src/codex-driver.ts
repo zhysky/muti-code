@@ -82,12 +82,21 @@ export class CodexDriver extends BaseDriver {
       });
       const text = await response.text();
       if (!response.ok) {
+        if (shouldUseMiniMaxChatFallback(response.status, text)) {
+          yield* this.completeWithMiniMaxChatCompletions(request, controller);
+          return;
+        }
         yield { type: "run.failed", runId: request.runId, error: `MiniMax Responses API failed (${response.status}): ${text || response.statusText}` };
         return;
       }
       const parsed = JSON.parse(text) as ResponsesApiResponse;
       if (parsed.error) {
-        yield { type: "run.failed", runId: request.runId, error: JSON.stringify(parsed.error) };
+        const errorText = JSON.stringify(parsed.error);
+        if (shouldUseMiniMaxChatFallback(undefined, errorText)) {
+          yield* this.completeWithMiniMaxChatCompletions(request, controller);
+          return;
+        }
+        yield { type: "run.failed", runId: request.runId, error: errorText };
         return;
       }
       if (controller.signal.aborted) {
@@ -109,6 +118,103 @@ export class CodexDriver extends BaseDriver {
     } finally {
       this.cleanup(request.runId);
     }
+  }
+
+  private async *completeWithMiniMaxChatCompletions(
+    request: AgentRunRequest,
+    controller: AbortController
+  ): AsyncIterable<AgentEvent> {
+    const response = await fetch(`${miniMaxResponsesBaseUrl()}/chat/completions`, {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${miniMaxResponsesApiKey()}`
+      },
+      body: JSON.stringify({
+        model: request.runtimeModel,
+        messages: [
+          {
+            role: "user",
+            content: request.prompt
+          }
+        ]
+      })
+    });
+    const text = await response.text();
+    if (!response.ok) {
+      if (shouldUseMiniMaxChatFallback(response.status, text)) {
+        yield* this.completeWithMiniMaxAnthropicMessages(request, controller);
+        return;
+      }
+      yield { type: "run.failed", runId: request.runId, error: `MiniMax Chat Completions API failed (${response.status}): ${text || response.statusText}` };
+      return;
+    }
+    const parsed = JSON.parse(text) as ChatCompletionsApiResponse;
+    if (parsed.error) {
+      const errorText = JSON.stringify(parsed.error);
+      if (shouldUseMiniMaxChatFallback(undefined, errorText)) {
+        yield* this.completeWithMiniMaxAnthropicMessages(request, controller);
+        return;
+      }
+      yield { type: "run.failed", runId: request.runId, error: errorText };
+      return;
+    }
+    if (controller.signal.aborted) {
+      yield { type: "run.aborted", runId: request.runId };
+      return;
+    }
+    const output = stripThinkBlocks(extractChatCompletionsText(parsed));
+    if (output) {
+      yield { type: "text.delta", runId: request.runId, text: output };
+      yield { type: "message.completed", runId: request.runId, text: output };
+    }
+    yield { type: "run.completed", runId: request.runId, usage: parsed.usage };
+  }
+
+  private async *completeWithMiniMaxAnthropicMessages(
+    request: AgentRunRequest,
+    controller: AbortController
+  ): AsyncIterable<AgentEvent> {
+    const response = await fetch(`${miniMaxAnthropicBaseUrl()}/v1/messages`, {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": miniMaxResponsesApiKey(),
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: request.runtimeModel,
+        max_tokens: 1024,
+        messages: [
+          {
+            role: "user",
+            content: request.prompt
+          }
+        ]
+      })
+    });
+    const text = await response.text();
+    if (!response.ok) {
+      yield { type: "run.failed", runId: request.runId, error: `MiniMax Anthropic Messages API failed (${response.status}): ${text || response.statusText}` };
+      return;
+    }
+    const parsed = JSON.parse(text) as AnthropicMessagesApiResponse;
+    if (parsed.error) {
+      yield { type: "run.failed", runId: request.runId, error: JSON.stringify(parsed.error) };
+      return;
+    }
+    if (controller.signal.aborted) {
+      yield { type: "run.aborted", runId: request.runId };
+      return;
+    }
+    const output = stripThinkBlocks(extractAnthropicMessagesText(parsed));
+    if (output) {
+      yield { type: "text.delta", runId: request.runId, text: output };
+      yield { type: "message.completed", runId: request.runId, text: output };
+    }
+    yield { type: "run.completed", runId: request.runId, usage: parsed.usage };
   }
 
   async health(): Promise<AgentHealth> {
@@ -182,6 +288,25 @@ interface ResponsesApiResponse {
   error?: unknown;
 }
 
+interface ChatCompletionsApiResponse {
+  choices?: Array<{
+    message?: {
+      content?: string;
+    };
+  }>;
+  usage?: unknown;
+  error?: unknown;
+}
+
+interface AnthropicMessagesApiResponse {
+  content?: Array<{
+    type?: string;
+    text?: string;
+  }>;
+  usage?: unknown;
+  error?: unknown;
+}
+
 function shouldUseMiniMaxResponsesFallback(runtimeModel: string): boolean {
   return runtimeModel === "MiniMax-M3" && Boolean(process.env.MINIMAX_API_KEY);
 }
@@ -190,8 +315,17 @@ function miniMaxResponsesBaseUrl(): string {
   return (process.env.INTERNAL_LLM_BASE_URL ?? "https://api.minimaxi.com/v1").replace(/\/$/, "");
 }
 
+function miniMaxAnthropicBaseUrl(): string {
+  return (process.env.ANTHROPIC_BASE_URL ?? "https://api.minimaxi.com/anthropic").replace(/\/$/, "");
+}
+
 function miniMaxResponsesApiKey(): string {
   return process.env.MINIMAX_API_KEY || process.env.INTERNAL_LLM_API_KEY || "";
+}
+
+function shouldUseMiniMaxChatFallback(status: number | undefined, body: string): boolean {
+  if (status === 429) return true;
+  return body.includes("rate_limit_exceeded") || body.includes("速率限制");
 }
 
 function extractResponsesText(response: ResponsesApiResponse): string {
@@ -201,6 +335,23 @@ function extractResponsesText(response: ResponsesApiResponse): string {
   return (response.output ?? [])
     .flatMap((item) => item.content ?? [])
     .map((content) => content.text)
+    .filter((text): text is string => typeof text === "string" && text.trim().length > 0)
+    .join("\n")
+    .trim();
+}
+
+function extractChatCompletionsText(response: ChatCompletionsApiResponse): string {
+  return (response.choices ?? [])
+    .map((choice) => choice.message?.content)
+    .filter((text): text is string => typeof text === "string" && text.trim().length > 0)
+    .join("\n")
+    .trim();
+}
+
+function extractAnthropicMessagesText(response: AnthropicMessagesApiResponse): string {
+  return (response.content ?? [])
+    .filter((item) => item.type === "text" && typeof item.text === "string")
+    .map((item) => item.text)
     .filter((text): text is string => typeof text === "string" && text.trim().length > 0)
     .join("\n")
     .trim();
