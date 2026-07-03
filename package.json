@@ -16,14 +16,14 @@
     "phase0": "tsx scripts/phase0-runtime-check.ts",
     "demo:http": "bash scripts/demo-http.sh",
     "db:migrate": "npm run migrate -w @agent-gateway/api",
-    "compose:up": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d",
-    "compose:down": "podman compose -f deploy/docker-compose.yml down",
-    "compose:restart": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate",
-    "compose:restart:gateway": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate gateway",
-    "compose:restart:web": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate web",
-    "compose:up:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d",
-    "compose:down:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config podman compose -f deploy/docker-compose.yml down",
-    "compose:restart:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate"
+    "compose:up": "zsh -lc 'source ~/.zshrc >/dev/null 2>&1 || true; mkdir -p /tmp/multi-agent-gateway-docker-config; export DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real; podman compose -f deploy/docker-compose.yml up --build -d'",
+    "compose:down": "zsh -lc 'mkdir -p /tmp/multi-agent-gateway-docker-config; export DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config; podman compose -f deploy/docker-compose.yml down; podman rm -f deploy-gateway-1 deploy-web-1 deploy-opencode-1 deploy-postgres-1 deploy-redis-1 2>/dev/null || true'",
+    "compose:restart": "zsh -lc 'source ~/.zshrc >/dev/null 2>&1 || true; mkdir -p /tmp/multi-agent-gateway-docker-config; export DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real; podman compose -f deploy/docker-compose.yml down; podman rm -f deploy-gateway-1 deploy-web-1 deploy-opencode-1 deploy-postgres-1 deploy-redis-1 2>/dev/null || true; podman compose -f deploy/docker-compose.yml up --build -d'",
+    "compose:restart:gateway": "zsh -lc 'source ~/.zshrc >/dev/null 2>&1 || true; mkdir -p /tmp/multi-agent-gateway-docker-config; export DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real; podman rm -f deploy-gateway-1 2>/dev/null || true; podman compose -f deploy/docker-compose.yml up --build -d gateway'",
+    "compose:restart:web": "zsh -lc 'source ~/.zshrc >/dev/null 2>&1 || true; mkdir -p /tmp/multi-agent-gateway-docker-config; export DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real; podman rm -f deploy-web-1 2>/dev/null || true; podman compose -f deploy/docker-compose.yml up --build -d web'",
+    "compose:up:safe": "npm run compose:up",
+    "compose:down:safe": "npm run compose:down",
+    "compose:restart:safe": "npm run compose:restart"
   },
   "dependencies": {
     "@anthropic-ai/claude-agent-sdk": "^0.3.198",

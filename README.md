@@ -18,10 +18,9 @@
 
 ## 真实模型快速启动
 
-本地开发使用 Podman Compose。确认 shell 中已有 `MINIMAX_API_KEY` 后，启动完整服务栈：
+本地开发使用 Podman Compose。确认 `~/.zshrc` 中已有 `MINIMAX_API_KEY` 后，启动完整服务栈：
 
 ```bash
-source ~/.zshrc
 npm run compose:up
 ```
 
@@ -57,10 +56,9 @@ npm run dev:web
 
 ## 容器运行
 
-完整演示拓扑使用 Podman Compose 启动，包含 `gateway`、`web`、`opencode`、`postgres` 和 `redis`。
+完整演示拓扑使用 Podman Compose 启动，包含 `gateway`、`web`、`opencode`、`postgres` 和 `redis`。npm scripts 会自动读取 `~/.zshrc` 中的 `MINIMAX_API_KEY`，并使用临时 `DOCKER_CONFIG` 避免本机 Docker credential helper 配置影响 Podman Compose。
 
 ```bash
-source ~/.zshrc
 npm run compose:up
 ```
 
@@ -70,12 +68,12 @@ npm run compose:up
 | --- | --- |
 | `npm run compose:up` | 第一次启动或正常启动真实模型演示服务。 |
 | `npm run compose:down` | 停止并移除 compose 启动的服务容器。 |
-| `npm run compose:restart` | 修改了公共代码、后端、前端或配置后，重建并强制重启全部服务。 |
-| `npm run compose:restart:gateway` | 只修改了后端 API、core、db、drivers、im、security、observability 等 gateway 相关代码。 |
-| `npm run compose:restart:web` | 只修改了前端 Web 代码。 |
-| `npm run compose:up:safe` | 本机 Podman 拉取镜像或 credential helper 查询卡住时，用这个启动。 |
-| `npm run compose:down:safe` | 使用 safe 模式启动后，用这个停止服务。 |
-| `npm run compose:restart:safe` | 遇到 Podman credential helper 问题时，重建并强制重启全部服务。 |
+| `npm run compose:restart` | 修改了公共代码、后端、前端或配置后，停止并重建全部服务。 |
+| `npm run compose:restart:gateway` | 只修改了后端 API、core、db、drivers、im、security、observability 等 gateway 相关代码；会先移除旧 gateway 容器再重建。 |
+| `npm run compose:restart:web` | 只修改了前端 Web 代码；会先移除旧 web 容器再重建。 |
+| `npm run compose:up:safe` | `compose:up` 的兼容别名。 |
+| `npm run compose:down:safe` | `compose:down` 的兼容别名。 |
+| `npm run compose:restart:safe` | `compose:restart` 的兼容别名。 |
 
 常用检查命令：
 
@@ -85,7 +83,7 @@ curl http://localhost:3000/readyz
 podman compose -f deploy/docker-compose.yml ps
 ```
 
-如果 Podman 拉取镜像或 credential helper 查询卡住，请优先使用带 `:safe` 后缀的脚本。
+这些脚本会自动创建并使用 `/tmp/multi-agent-gateway-docker-config`。
 
 ## HTTP 演示
 
