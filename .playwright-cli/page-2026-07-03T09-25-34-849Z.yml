@@ -1,0 +1,80 @@
+- main [ref=e3]:
+  - complementary [ref=e4]:
+    - strong [ref=e6]: Multi-Agent Gateway
+    - button "+ 新会话" [ref=e7] [cursor=pointer]:
+      - generic [ref=e8]: +
+      - text: 新会话
+    - navigation "Sessions" [ref=e9]:
+      - generic [ref=e10]: 最近
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e11] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e12] [cursor=pointer]
+      - button "查一下 MySQL 对比 Pg 、s..." [ref=e13] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e14] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e15] [cursor=pointer]
+      - button "用一句中文回答：5+3 等于几？" [ref=e16] [cursor=pointer]
+      - button "用一句中文回答：2+3 等于几？" [ref=e17] [cursor=pointer]
+      - button "real-minimax-smoke" [ref=e18] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e19] [cursor=pointer]
+      - button "新会话" [ref=e20] [cursor=pointer]
+      - button "新会话" [ref=e21] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e22] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e23] [cursor=pointer]
+      - button "opencode final smoke" [ref=e24] [cursor=pointer]
+      - button "codex final smoke" [ref=e25] [cursor=pointer]
+      - button "claude final smoke" [ref=e26] [cursor=pointer]
+      - button "codex minimax post-fix" [ref=e27] [cursor=pointer]
+      - button "claude minimax post-fix" [ref=e28] [cursor=pointer]
+      - button "codex minimax smoke" [ref=e29] [cursor=pointer]
+      - button "claude minimax smoke" [ref=e30] [cursor=pointer]
+      - button "opencode minimax clean" [ref=e31] [cursor=pointer]
+      - button "opencode minimax http" [ref=e32] [cursor=pointer]
+      - button "opencode minimax probe" [ref=e33] [cursor=pointer]
+      - button "opencode minimax fixed" [ref=e34] [cursor=pointer]
+      - button "demo session" [ref=e35] [cursor=pointer]
+    - generic [ref=e36]:
+      - generic [ref=e37]:
+        - generic [ref=e38]: Agent 底座
+        - combobox "Agent 底座" [ref=e39]:
+          - option "Claude Code" [selected]
+          - option "Codex"
+          - option "OpenCode"
+      - button "Open run details" [active] [ref=e40] [cursor=pointer]: ○
+  - generic [ref=e42]:
+    - article [ref=e53]:
+      - generic [ref=e54]: 查一下现在国内互联网大厂对数据库的选型与落地情况
+    - generic [ref=e45]:
+      - textbox "描述要交给 Agent 的任务，Enter 发送，Shift+Enter 换行；支持粘贴上下文 / 文件路径 / 命令输出" [ref=e46]
+      - generic [ref=e47]:
+        - button "Open run details" [ref=e48] [cursor=pointer]:
+          - generic [ref=e49]: +
+        - generic [ref=e50]:
+          - combobox "Model" [ref=e51]:
+            - option "Claude Sonnet" [selected]
+            - option "MiniMax-M3"
+          - button "Send message" [disabled] [ref=e52]: ↑
+  - complementary "Run details" [ref=e55]:
+    - generic [ref=e56]:
+      - generic [ref=e57]:
+        - strong [ref=e58]: Run details
+        - generic [ref=e59]: No active run
+      - button "Close run details" [ref=e60] [cursor=pointer]: x
+    - generic [ref=e61]:
+      - heading "Runtime" [level=2] [ref=e62]
+      - generic [ref=e63]:
+        - term [ref=e64]: Driver
+        - definition [ref=e65]: real
+        - term [ref=e66]: Storage
+        - definition [ref=e67]: postgres
+        - term [ref=e68]: MiniMax
+        - definition [ref=e69]: ready
+        - term [ref=e70]: Session
+        - definition [ref=e71]: sess_d900b4b8a992474dbf2630a0
+    - generic [ref=e72]:
+      - heading "Timeline" [level=2] [ref=e73]
+      - paragraph [ref=e75]: No run events yet
+    - generic [ref=e76]:
+      - heading "Run diff" [level=2] [ref=e77]
+      - generic [ref=e78]: No file changes for this run
+    - generic [ref=e79]:
+      - heading "HTTP request" [level=2] [ref=e80]
+      - generic [ref=e81]: Create or select a session first

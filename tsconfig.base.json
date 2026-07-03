@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@agent-gateway/core": ["./packages/core/src/index.ts"],
+      "@agent-gateway/db": ["./packages/db/src/index.ts"],
+      "@agent-gateway/drivers": ["./packages/drivers/src/index.ts"],
+      "@agent-gateway/im": ["./packages/im/src/index.ts"],
+      "@agent-gateway/security": ["./packages/security/src/index.ts"],
+      "@agent-gateway/observability": ["./packages/observability/src/index.ts"]
+    }
+  }
+}

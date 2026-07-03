@@ -1,0 +1,54 @@
+- main [ref=e3]:
+  - complementary [ref=e4]:
+    - strong [ref=e6]: Multi-Agent Gateway
+    - button "+ 新会话" [ref=e7] [cursor=pointer]:
+      - generic [ref=e8]: +
+      - text: 新会话
+    - navigation "Sessions" [ref=e9]:
+      - generic [ref=e10]: 最近
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e11] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e12] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e13] [cursor=pointer]
+      - button "查一下 MySQL 对比 Pg 、s..." [ref=e14] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e15] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e16] [cursor=pointer]
+      - button "用一句中文回答：5+3 等于几？" [ref=e17] [cursor=pointer]
+      - button "用一句中文回答：2+3 等于几？" [ref=e18] [cursor=pointer]
+      - button "real-minimax-smoke" [ref=e19] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e20] [cursor=pointer]
+      - button "新会话" [ref=e21] [cursor=pointer]
+      - button "新会话" [ref=e22] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e23] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e24] [cursor=pointer]
+      - button "opencode final smoke" [ref=e25] [cursor=pointer]
+      - button "codex final smoke" [ref=e26] [cursor=pointer]
+      - button "claude final smoke" [ref=e27] [cursor=pointer]
+      - button "codex minimax post-fix" [ref=e28] [cursor=pointer]
+      - button "claude minimax post-fix" [ref=e29] [cursor=pointer]
+      - button "codex minimax smoke" [ref=e30] [cursor=pointer]
+      - button "claude minimax smoke" [ref=e31] [cursor=pointer]
+      - button "opencode minimax clean" [ref=e32] [cursor=pointer]
+      - button "opencode minimax http" [ref=e33] [cursor=pointer]
+      - button "opencode minimax probe" [ref=e34] [cursor=pointer]
+      - button "opencode minimax fixed" [ref=e35] [cursor=pointer]
+      - button "demo session" [ref=e36] [cursor=pointer]
+    - generic [ref=e37]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: Agent 底座
+        - combobox "Agent 底座" [ref=e40]:
+          - option "Claude Code" [selected]
+          - option "Codex"
+          - option "OpenCode"
+      - button "Open run details" [ref=e41] [cursor=pointer]: ○
+  - generic [ref=e43]:
+    - paragraph [ref=e45]: 加载中...
+    - generic [ref=e46]:
+      - textbox "描述要交给 Agent 的任务，Enter 发送，Shift+Enter 换行；支持粘贴上下文 / 文件路径 / 命令输出" [ref=e47]
+      - generic [ref=e48]:
+        - button "Open run details" [ref=e49] [cursor=pointer]:
+          - generic [ref=e50]: +
+        - generic [ref=e51]:
+          - combobox "Model" [ref=e52]:
+            - option "Claude Sonnet" [selected]
+            - option "MiniMax-M3"
+          - button "Send message" [disabled] [ref=e53]: ↑

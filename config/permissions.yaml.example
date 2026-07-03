@@ -1,0 +1,11 @@
+profiles:
+  read-only:
+    allow_write: false
+    allow_shell: false
+    allow_network: false
+  workspace-write:
+    allow_write: true
+    allow_shell: limited
+    allow_network: false
+  dangerous-admin:
+    enabled: false

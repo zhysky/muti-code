@@ -1,0 +1,12 @@
+.git
+node_modules
+data
+logs
+workspaces
+
+npm-debug.log*
+Dockerfile*
+deploy
+docs
+tests
+prd.md

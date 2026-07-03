@@ -1,0 +1,53 @@
+{
+  "name": "multi-agent-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w @agent-gateway/api",
+    "dev:web": "npm run dev -w @agent-gateway/web",
+    "build": "npm run build -w @agent-gateway/web && tsc -p tsconfig.check.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "phase0": "tsx scripts/phase0-runtime-check.ts",
+    "demo:http": "bash scripts/demo-http.sh",
+    "db:migrate": "npm run migrate -w @agent-gateway/api",
+    "compose:up": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d",
+    "compose:down": "podman compose -f deploy/docker-compose.yml down",
+    "compose:restart": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate",
+    "compose:restart:gateway": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate gateway",
+    "compose:restart:web": "AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate web",
+    "compose:up:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d",
+    "compose:down:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config podman compose -f deploy/docker-compose.yml down",
+    "compose:restart:safe": "mkdir -p /tmp/multi-agent-gateway-docker-config && DOCKER_CONFIG=/tmp/multi-agent-gateway-docker-config AGENT_DRIVER_MODE=real podman compose -f deploy/docker-compose.yml up --build -d --force-recreate"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.3.198",
+    "@fastify/cors": "^11.0.1",
+    "@fastify/swagger": "^9.5.1",
+    "@fastify/swagger-ui": "^5.2.3",
+    "fastify": "^5.4.0",
+    "ioredis": "^5.6.1",
+    "pg": "^8.16.3",
+    "pino": "^9.7.0",
+    "yaml": "^2.8.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "@types/pg": "^8.15.4",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4"
+  }
+}

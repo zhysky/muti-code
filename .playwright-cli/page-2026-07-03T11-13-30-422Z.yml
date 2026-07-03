@@ -1,0 +1,481 @@
+- main [ref=e3]:
+  - complementary [ref=e4]:
+    - strong [ref=e6]: Multi-Agent Gateway
+    - button "+ 新会话" [ref=e7] [cursor=pointer]:
+      - generic [ref=e8]: +
+      - text: 新会话
+    - navigation "Sessions" [ref=e9]:
+      - generic [ref=e10]: 最近
+      - button "查一下 MySQL 对比 Pg 、s..." [ref=e11] [cursor=pointer]
+      - button "查一下 MySQL 对比 Pg 、s..." [ref=e12] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [active] [ref=e13] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e14] [cursor=pointer]
+      - button "查一下现在国内互联网大厂对数据库的选..." [ref=e15] [cursor=pointer]
+      - button "查一下 MySQL 对比 Pg 、s..." [ref=e16] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e17] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e18] [cursor=pointer]
+      - button "用一句中文回答：5+3 等于几？" [ref=e19] [cursor=pointer]
+      - button "用一句中文回答：2+3 等于几？" [ref=e20] [cursor=pointer]
+      - button "real-minimax-smoke" [ref=e21] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e22] [cursor=pointer]
+      - button "新会话" [ref=e23] [cursor=pointer]
+      - button "新会话" [ref=e24] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e25] [cursor=pointer]
+      - button "今天天气怎么样？" [ref=e26] [cursor=pointer]
+      - button "opencode final smoke" [ref=e27] [cursor=pointer]
+      - button "codex final smoke" [ref=e28] [cursor=pointer]
+      - button "claude final smoke" [ref=e29] [cursor=pointer]
+      - button "codex minimax post-fix" [ref=e30] [cursor=pointer]
+      - button "claude minimax post-fix" [ref=e31] [cursor=pointer]
+      - button "codex minimax smoke" [ref=e32] [cursor=pointer]
+      - button "claude minimax smoke" [ref=e33] [cursor=pointer]
+      - button "opencode minimax clean" [ref=e34] [cursor=pointer]
+      - button "opencode minimax http" [ref=e35] [cursor=pointer]
+      - button "opencode minimax probe" [ref=e36] [cursor=pointer]
+      - button "opencode minimax fixed" [ref=e37] [cursor=pointer]
+      - button "demo session" [ref=e38] [cursor=pointer]
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]: Agent 底座
+        - combobox "Agent 底座" [ref=e42]:
+          - option "Claude Code" [selected]
+          - option "Codex"
+          - option "OpenCode"
+      - button "Open run details" [ref=e43] [cursor=pointer]: ○
+  - generic [ref=e45]:
+    - generic [ref=e46]:
+      - article [ref=e382]:
+        - generic [ref=e383]: 查一下现在国内互联网大厂对数据库的选型与落地情况
+      - article [ref=e384]:
+        - generic [ref=e386]:
+          - paragraph [ref=e387]: 由于网络搜索接口当前不可用，我基于已有的公开信息和行业知识（截至 2026 年中）给您做一个系统性梳理。下面按公司维度给出主要数据库选型与落地情况：
+          - separator [ref=e388]
+          - heading "一、阿里巴巴 / 蚂蚁集团" [level=2] [ref=e389]
+          - table [ref=e390]:
+            - rowgroup [ref=e391]:
+              - row "数据库 类型 主要场景" [ref=e392]:
+                - columnheader "数据库" [ref=e393]
+                - columnheader "类型" [ref=e394]
+                - columnheader "主要场景" [ref=e395]
+            - rowgroup [ref=e396]:
+              - row "OceanBase 自研原生分布式关系型 蚂蚁全部核心交易、网商银行、阿里内部账务；2023 年起对外商业化，2024-2025 年成为大型银行/运营商核心系统替代主力" [ref=e397]:
+                - cell "OceanBase" [ref=e398]:
+                  - strong [ref=e399]: OceanBase
+                - cell "自研原生分布式关系型" [ref=e400]
+                - cell "蚂蚁全部核心交易、网商银行、阿里内部账务；2023 年起对外商业化，2024-2025 年成为大型银行/运营商核心系统替代主力" [ref=e401]
+              - row "PolarDB 阿里云原生关系型（计算存储分离） 阿里云上 MySQL/PG 兼容主力，2025 年落地了 PolarDB MySQL 8.0 兼容版和 PolarDB IMCI（HTAP）" [ref=e402]:
+                - cell "PolarDB" [ref=e403]:
+                  - strong [ref=e404]: PolarDB
+                - cell "阿里云原生关系型（计算存储分离）" [ref=e405]
+                - cell "阿里云上 MySQL/PG 兼容主力，2025 年落地了 PolarDB MySQL 8.0 兼容版和 PolarDB IMCI（HTAP）" [ref=e406]
+              - row "AnalyticDB (ADB) 实时数仓（向量+SQL） 阿里集团 BI、推荐、风控" [ref=e407]:
+                - cell "AnalyticDB (ADB)" [ref=e408]:
+                  - strong [ref=e409]: AnalyticDB (ADB)
+                - cell "实时数仓（向量+SQL）" [ref=e410]
+                - cell "阿里集团 BI、推荐、风控" [ref=e411]
+              - row "Lindorm 多模 NoSQL（KV/宽表/时序/文档） IoT、风控、Feed" [ref=e412]:
+                - cell "Lindorm" [ref=e413]:
+                  - strong [ref=e414]: Lindorm
+                - cell "多模 NoSQL（KV/宽表/时序/文档）" [ref=e415]
+                - cell "IoT、风控、Feed" [ref=e416]
+              - row "Tair Redis 兼容持久化 KV 缓存、Session、计数" [ref=e417]:
+                - cell "Tair" [ref=e418]:
+                  - strong [ref=e419]: Tair
+                - cell "Redis 兼容持久化 KV" [ref=e420]
+                - cell "缓存、Session、计数" [ref=e421]
+              - row "Graphscope / GDB 图数据库 风控反欺诈、社交网络" [ref=e422]:
+                - cell "Graphscope / GDB" [ref=e423]:
+                  - strong [ref=e424]: Graphscope / GDB
+                - cell "图数据库" [ref=e425]
+                - cell "风控反欺诈、社交网络" [ref=e426]
+          - paragraph [ref=e427]:
+            - strong [ref=e428]: 趋势
+            - text: ：蚂蚁集团 2014 年起就用 OceanBase 替代 Oracle，目前 OceanBase 已服务超 2000 家外部客户，是国内去 IOE 最成功的案例。
+          - separator [ref=e429]
+          - heading "二、腾讯" [level=2] [ref=e430]
+          - table [ref=e431]:
+            - rowgroup [ref=e432]:
+              - row "数据库 类型 主要场景" [ref=e433]:
+                - columnheader "数据库" [ref=e434]
+                - columnheader "类型" [ref=e435]
+                - columnheader "主要场景" [ref=e436]
+            - rowgroup [ref=e437]:
+              - row "TDSQL（含 MySQL 版、PostgreSQL 版） 自研分布式关系型 微信支付、QQ、红包、微众银行核心账务" [ref=e438]:
+                - cell "TDSQL（含 MySQL 版、PostgreSQL 版）" [ref=e439]:
+                  - strong [ref=e440]: TDSQL
+                  - text: （含 MySQL 版、PostgreSQL 版）
+                - cell "自研分布式关系型" [ref=e441]
+                - cell "微信支付、QQ、红包、微众银行核心账务" [ref=e442]
+              - row "CynosDB（现改名 TDSQL-C） 云原生 MySQL/PG 兼容 腾讯云上 OLTP 主力" [ref=e443]:
+                - cell "CynosDB（现改名 TDSQL-C）" [ref=e444]:
+                  - strong [ref=e445]: CynosDB
+                  - text: （现改名 TDSQL-C）
+                - cell "云原生 MySQL/PG 兼容" [ref=e446]
+                - cell "腾讯云上 OLTP 主力" [ref=e447]
+              - row "TBase PG-based 分布式 内部 OLTP + 地理空间" [ref=e448]:
+                - cell "TBase" [ref=e449]:
+                  - strong [ref=e450]: TBase
+                - cell "PG-based 分布式" [ref=e451]
+                - cell "内部 OLTP + 地理空间" [ref=e452]
+              - row "TXSQL MySQL 内核深度定制 腾讯内部 MySQL 业务" [ref=e453]:
+                - cell "TXSQL" [ref=e454]:
+                  - strong [ref=e455]: TXSQL
+                - cell "MySQL 内核深度定制" [ref=e456]
+                - cell "腾讯内部 MySQL 业务" [ref=e457]
+              - row "TGrafana / TencentCK 自研 ClickHouse 优化版 内部 OLAP" [ref=e458]:
+                - cell "TGrafana / TencentCK" [ref=e459]:
+                  - strong [ref=e460]: TGrafana / TencentCK
+                - cell "自研 ClickHouse 优化版" [ref=e461]
+                - cell "内部 OLAP" [ref=e462]
+              - row "Stargo / Nova 自研向量数据库 2025 年 AI/RAG 场景" [ref=e463]:
+                - cell "Stargo / Nova" [ref=e464]:
+                  - strong [ref=e465]: Stargo / Nova
+                - cell "自研向量数据库" [ref=e466]
+                - cell "2025 年 AI/RAG 场景" [ref=e467]
+          - paragraph [ref=e468]:
+            - strong [ref=e469]: 趋势
+            - text: ：TDSQL 在微众银行、汇丰（中国）核心系统替代了 Oracle；2024-2025 年加大向量数据库投入以支撑混元大模型 RAG。
+          - separator [ref=e470]
+          - heading "三、字节跳动" [level=2] [ref=e471]
+          - table [ref=e472]:
+            - rowgroup [ref=e473]:
+              - row "数据库 类型 主要场景" [ref=e474]:
+                - columnheader "数据库" [ref=e475]
+                - columnheader "类型" [ref=e476]
+                - columnheader "主要场景" [ref=e477]
+            - rowgroup [ref=e478]:
+              - row "ByteHouse ClickHouse 内核深度优化 抖音/TikTok 广告、推荐、AB 实验、BI" [ref=e479]:
+                - cell "ByteHouse" [ref=e480]:
+                  - strong [ref=e481]: ByteHouse
+                - cell "ClickHouse 内核深度优化" [ref=e482]
+                - cell "抖音/TikTok 广告、推荐、AB 实验、BI" [ref=e483]
+              - row "ByConity 云原生 MPP 数仓 字节内部 BI（已开源）" [ref=e484]:
+                - cell "ByConity" [ref=e485]:
+                  - strong [ref=e486]: ByConity
+                - cell "云原生 MPP 数仓" [ref=e487]
+                - cell "字节内部 BI（已开源）" [ref=e488]
+              - row "Lasp 自研 KV 存储 抖音 Feed、计数、点赞" [ref=e489]:
+                - cell "Lasp" [ref=e490]:
+                  - strong [ref=e491]: Lasp
+                - cell "自研 KV 存储" [ref=e492]
+                - cell "抖音 Feed、计数、点赞" [ref=e493]
+              - row "Seldra 自研向量数据库 豆包大模型 RAG、推荐" [ref=e494]:
+                - cell "Seldra" [ref=e495]:
+                  - strong [ref=e496]: Seldra
+                - cell "自研向量数据库" [ref=e497]
+                - cell "豆包大模型 RAG、推荐" [ref=e498]
+              - row "RStore 自研 LSM KV 在线 KV 存储" [ref=e499]:
+                - cell "RStore" [ref=e500]:
+                  - strong [ref=e501]: RStore
+                - cell "自研 LSM KV" [ref=e502]
+                - cell "在线 KV 存储" [ref=e503]
+              - row "MongoDB / MySQL 开源 通用 OLTP" [ref=e504]:
+                - cell "MongoDB / MySQL" [ref=e505]:
+                  - strong [ref=e506]: MongoDB / MySQL
+                - cell "开源" [ref=e507]
+                - cell "通用 OLTP" [ref=e508]
+          - paragraph [ref=e509]:
+            - strong [ref=e510]: 趋势
+            - text: ：字节是 ClickHouse 全球最大用户之一，自研了 ByteHouse（ClickHouse 内核优化版），2025 年起在向量数据库、湖仓（Iceberg + 自研）上加大投入。
+          - separator [ref=e511]
+          - heading "四、美团" [level=2] [ref=e512]
+          - table [ref=e513]:
+            - rowgroup [ref=e514]:
+              - row "数据库 类型 主要场景" [ref=e515]:
+                - columnheader "数据库" [ref=e516]
+                - columnheader "类型" [ref=e517]
+                - columnheader "主要场景" [ref=e518]
+            - rowgroup [ref=e519]:
+              - row "MTBASE / MTDDL 自研 MySQL 中间件 + Sharding 外卖、到店等核心交易" [ref=e520]:
+                - cell "MTBASE / MTDDL" [ref=e521]:
+                  - strong [ref=e522]: MTBASE / MTDDL
+                - cell "自研 MySQL 中间件 + Sharding" [ref=e523]
+                - cell "外卖、到店等核心交易" [ref=e524]
+              - row "Zeppelin 类 HBase 宽表存储 订单、轨迹" [ref=e525]:
+                - cell "Zeppelin" [ref=e526]:
+                  - strong [ref=e527]: Zeppelin
+                - cell "类 HBase 宽表存储" [ref=e528]
+                - cell "订单、轨迹" [ref=e529]
+              - row "Cellar 类 Redis KV 缓存" [ref=e530]:
+                - cell "Cellar" [ref=e531]:
+                  - strong [ref=e532]: Cellar
+                - cell "类 Redis KV" [ref=e533]
+                - cell "缓存" [ref=e534]
+              - row "Mola / Doris 自研 OLAP 内部 BI、推荐" [ref=e535]:
+                - cell "Mola / Doris" [ref=e536]:
+                  - strong [ref=e537]: Mola / Doris
+                - cell "自研 OLAP" [ref=e538]
+                - cell "内部 BI、推荐" [ref=e539]
+              - row "Swan 时序数据库 监控、IoT" [ref=e540]:
+                - cell "Swan" [ref=e541]:
+                  - strong [ref=e542]: Swan
+                - cell "时序数据库" [ref=e543]
+                - cell "监控、IoT" [ref=e544]
+              - row "MySQL / TiDB / ClickHouse 开源 部分场景" [ref=e545]:
+                - cell "MySQL / TiDB / ClickHouse" [ref=e546]:
+                  - strong [ref=e547]: MySQL / TiDB / ClickHouse
+                - cell "开源" [ref=e548]
+                - cell "部分场景" [ref=e549]
+          - paragraph [ref=e550]:
+            - strong [ref=e551]: 趋势
+            - text: ：美团仍以 MySQL Sharding 为主，但 2024-2025 年开始在 OLAP 上加大 Doris 投入。
+          - separator [ref=e552]
+          - heading "五、京东" [level=2] [ref=e553]
+          - table [ref=e554]:
+            - rowgroup [ref=e555]:
+              - row "数据库 类型 主要场景" [ref=e556]:
+                - columnheader "数据库" [ref=e557]
+                - columnheader "类型" [ref=e558]
+                - columnheader "主要场景" [ref=e559]
+            - rowgroup [ref=e560]:
+              - row "JDB (JD distributed DB) 自研分布式 MySQL 兼容 京东核心交易（订单、支付）" [ref=e561]:
+                - cell "JDB (JD distributed DB)" [ref=e562]:
+                  - strong [ref=e563]: JDB (JD distributed DB)
+                - cell "自研分布式 MySQL 兼容" [ref=e564]
+                - cell "京东核心交易（订单、支付）" [ref=e565]
+              - row "StarRocks / Doris 开源 OLAP 京东内部 BI、推荐、风控" [ref=e566]:
+                - cell "StarRocks / Doris" [ref=e567]:
+                  - strong [ref=e568]: StarRocks / Doris
+                - cell "开源 OLAP" [ref=e569]
+                - cell "京东内部 BI、推荐、风控" [ref=e570]
+              - row "StarDB 自研时序/文档 IoT、监控" [ref=e571]:
+                - cell "StarDB" [ref=e572]:
+                  - strong [ref=e573]: StarDB
+                - cell "自研时序/文档" [ref=e574]
+                - cell "IoT、监控" [ref=e575]
+              - row "JCHDB ClickHouse 优化版 实时数仓" [ref=e576]:
+                - cell "JCHDB" [ref=e577]:
+                  - strong [ref=e578]: JCHDB
+                - cell "ClickHouse 优化版" [ref=e579]
+                - cell "实时数仓" [ref=e580]
+              - row "Elasticsearch / HBase 开源 搜索、风控" [ref=e581]:
+                - cell "Elasticsearch / HBase" [ref=e582]:
+                  - strong [ref=e583]: Elasticsearch / HBase
+                - cell "开源" [ref=e584]
+                - cell "搜索、风控" [ref=e585]
+          - paragraph [ref=e586]:
+            - strong [ref=e587]: 趋势
+            - text: ：京东 2018 年起推进去 Oracle，2025 年大部分核心系统已迁移到 JDB + MySQL。
+          - separator [ref=e588]
+          - heading "六、拼多多" [level=2] [ref=e589]
+          - table [ref=e590]:
+            - rowgroup [ref=e591]:
+              - row "数据库 类型 主要场景" [ref=e592]:
+                - columnheader "数据库" [ref=e593]
+                - columnheader "类型" [ref=e594]
+                - columnheader "主要场景" [ref=e595]
+            - rowgroup [ref=e596]:
+              - row "MySQL + 自研中间件 Sharding MySQL 订单、商品、交易" [ref=e597]:
+                - cell "MySQL + 自研中间件" [ref=e598]:
+                  - strong [ref=e599]: MySQL + 自研中间件
+                - cell "Sharding MySQL" [ref=e600]
+                - cell "订单、商品、交易" [ref=e601]
+              - row "TiDB 开源分布式 HTAP 部分核心交易、报表" [ref=e602]:
+                - cell "TiDB" [ref=e603]:
+                  - strong [ref=e604]: TiDB
+                - cell "开源分布式 HTAP" [ref=e605]
+                - cell "部分核心交易、报表" [ref=e606]
+              - row "ClickHouse / StarRocks OLAP 实时 BI" [ref=e607]:
+                - cell "ClickHouse / StarRocks" [ref=e608]:
+                  - strong [ref=e609]: ClickHouse / StarRocks
+                - cell "OLAP" [ref=e610]
+                - cell "实时 BI" [ref=e611]
+              - row "HBase / Kafka 开源 通用" [ref=e612]:
+                - cell "HBase / Kafka" [ref=e613]:
+                  - strong [ref=e614]: HBase / Kafka
+                - cell "开源" [ref=e615]
+                - cell "通用" [ref=e616]
+          - paragraph [ref=e617]:
+            - strong [ref=e618]: 趋势
+            - text: ：拼多多对成本极度敏感，以 MySQL 自建为主，TiDB 在部分核心交易使用；2025 年 OLAP 选型倾向 StarRocks。
+          - separator [ref=e619]
+          - heading "七、快手" [level=2] [ref=e620]
+          - table [ref=e621]:
+            - rowgroup [ref=e622]:
+              - row "数据库 类型 主要场景" [ref=e623]:
+                - columnheader "数据库" [ref=e624]
+                - columnheader "类型" [ref=e625]
+                - columnheader "主要场景" [ref=e626]
+            - rowgroup [ref=e627]:
+              - row "Expeder / 内部 KV 自研 LSM KV Feed、点赞、计数" [ref=e628]:
+                - cell "Expeder / 内部 KV" [ref=e629]:
+                  - strong [ref=e630]: Expeder / 内部 KV
+                - cell "自研 LSM KV" [ref=e631]
+                - cell "Feed、点赞、计数" [ref=e632]
+              - row "HBase 开源宽表 用户画像" [ref=e633]:
+                - cell "HBase" [ref=e634]:
+                  - strong [ref=e635]: HBase
+                - cell "开源宽表" [ref=e636]
+                - cell "用户画像" [ref=e637]
+              - row "ClickHouse / StarRocks OLAP 实时 BI、广告" [ref=e638]:
+                - cell "ClickHouse / StarRocks" [ref=e639]:
+                  - strong [ref=e640]: ClickHouse / StarRocks
+                - cell "OLAP" [ref=e641]
+                - cell "实时 BI、广告" [ref=e642]
+              - row "MySQL / TiDB 开源 OLTP" [ref=e643]:
+                - cell "MySQL / TiDB" [ref=e644]:
+                  - strong [ref=e645]: MySQL / TiDB
+                - cell "开源" [ref=e646]
+                - cell "OLTP" [ref=e647]
+              - row "向量数据库 自研 + Milvus 大模型 RAG" [ref=e648]:
+                - cell "向量数据库" [ref=e649]:
+                  - strong [ref=e650]: 向量数据库
+                - cell "自研 + Milvus" [ref=e651]
+                - cell "大模型 RAG" [ref=e652]
+          - paragraph [ref=e653]:
+            - strong [ref=e654]: 趋势
+            - text: ：2025 年明显加大向量数据库和湖仓一体（Iceberg + 自研引擎）的投入。
+          - separator [ref=e655]
+          - heading "八、小米" [level=2] [ref=e656]
+          - table [ref=e657]:
+            - rowgroup [ref=e658]:
+              - row "数据库 类型 主要场景" [ref=e659]:
+                - columnheader "数据库" [ref=e660]
+                - columnheader "类型" [ref=e661]
+                - columnheader "主要场景" [ref=e662]
+            - rowgroup [ref=e663]:
+              - row "MySQL + 自研中间件 分库分表 电商、IoT" [ref=e664]:
+                - cell "MySQL + 自研中间件" [ref=e665]:
+                  - strong [ref=e666]: MySQL + 自研中间件
+                - cell "分库分表" [ref=e667]
+                - cell "电商、IoT" [ref=e668]
+              - row "TiDB 开源分布式 部分高可用场景" [ref=e669]:
+                - cell "TiDB" [ref=e670]:
+                  - strong [ref=e671]: TiDB
+                - cell "开源分布式" [ref=e672]
+                - cell "部分高可用场景" [ref=e673]
+              - row "Doris / StarRocks OLAP 内部 BI" [ref=e674]:
+                - cell "Doris / StarRocks" [ref=e675]:
+                  - strong [ref=e676]: Doris / StarRocks
+                - cell "OLAP" [ref=e677]
+                - cell "内部 BI" [ref=e678]
+              - row "InfluxDB / Prometheus 时序 IoT、监控" [ref=e679]:
+                - cell "InfluxDB / Prometheus" [ref=e680]:
+                  - strong [ref=e681]: InfluxDB / Prometheus
+                - cell "时序" [ref=e682]
+                - cell "IoT、监控" [ref=e683]
+              - row "Milvus 向量 AIoT 场景" [ref=e684]:
+                - cell "Milvus" [ref=e685]:
+                  - strong [ref=e686]: Milvus
+                - cell "向量" [ref=e687]
+                - cell "AIoT 场景" [ref=e688]
+          - paragraph [ref=e689]:
+            - strong [ref=e690]: 趋势
+            - text: ：小米 IoT 业务体量大，时序和向量数据库投入显著。
+          - separator [ref=e691]
+          - heading "九、其他大厂简表" [level=2] [ref=e692]
+          - table [ref=e693]:
+            - rowgroup [ref=e694]:
+              - row "公司 OLTP 主力 OLAP 主力 自研亮点" [ref=e695]:
+                - columnheader "公司" [ref=e696]
+                - columnheader "OLTP 主力" [ref=e697]
+                - columnheader "OLAP 主力" [ref=e698]
+                - columnheader "自研亮点" [ref=e699]
+            - rowgroup [ref=e700]:
+              - row "百度 GaiaDB（自研）、MySQL Doris、ClickHouse GaiaDB 服务搜索、广告" [ref=e701]:
+                - cell "百度" [ref=e702]:
+                  - strong [ref=e703]: 百度
+                - cell "GaiaDB（自研）、MySQL" [ref=e704]
+                - cell "Doris、ClickHouse" [ref=e705]
+                - cell "GaiaDB 服务搜索、广告" [ref=e706]
+              - row "网易 MySQL、PostgreSQL ClickHouse、Doris 在游戏数据库上有积累" [ref=e707]:
+                - cell "网易" [ref=e708]:
+                  - strong [ref=e709]: 网易
+                - cell "MySQL、PostgreSQL" [ref=e710]
+                - cell "ClickHouse、Doris" [ref=e711]
+                - cell "在游戏数据库上有积累" [ref=e712]
+              - row "滴滴 MySQL、TiDB ClickHouse、Doris 行程、风控数据库" [ref=e713]:
+                - cell "滴滴" [ref=e714]:
+                  - strong [ref=e715]: 滴滴
+                - cell "MySQL、TiDB" [ref=e716]
+                - cell "ClickHouse、Doris" [ref=e717]
+                - cell "行程、风控数据库" [ref=e718]
+              - row "B 站 MySQL + TiDB ClickHouse、StarRocks 视频元数据" [ref=e719]:
+                - cell "B 站" [ref=e720]:
+                  - strong [ref=e721]: B 站
+                - cell "MySQL + TiDB" [ref=e722]
+                - cell "ClickHouse、StarRocks" [ref=e723]
+                - cell "视频元数据" [ref=e724]
+              - row "知乎 MySQL + 自研 ClickHouse 内容存储" [ref=e725]:
+                - cell "知乎" [ref=e726]:
+                  - strong [ref=e727]: 知乎
+                - cell "MySQL + 自研" [ref=e728]
+                - cell "ClickHouse" [ref=e729]
+                - cell "内容存储" [ref=e730]
+              - row "得物 / 小红书 MySQL + TiDB StarRocks 内容、推荐" [ref=e731]:
+                - cell "得物 / 小红书" [ref=e732]:
+                  - strong [ref=e733]: 得物 / 小红书
+                - cell "MySQL + TiDB" [ref=e734]
+                - cell "StarRocks" [ref=e735]
+                - cell "内容、推荐" [ref=e736]
+          - separator [ref=e737]
+          - heading "十、行业整体趋势（2025-2026）" [level=2] [ref=e738]
+          - heading "1. OLTP 方向：从 MySQL Sharding 到原生分布式" [level=3] [ref=e739]
+          - list [ref=e740]:
+            - listitem [ref=e741]:
+              - strong [ref=e742]: OceanBase / TDSQL / TiDB / PolarDB
+              - text: 是国内四强，分别背靠蚂蚁、腾讯、PingCAP、阿里云。
+            - listitem [ref=e743]: 大厂核心交易系统已基本完成"去 Oracle / 去 MySQL Sharding 自建"→"原生分布式数据库"转型。
+          - heading "2. OLAP 方向：StarRocks / Doris 反超 ClickHouse" [level=3] [ref=e744]
+          - list [ref=e745]:
+            - listitem [ref=e746]:
+              - text: 过去是 ClickHouse 主导，2024-2025 年
+              - strong [ref=e747]: StarRocks / Doris
+              - text: （国内开源项目）成为更主流选择，原因是更好的标准 SQL 兼容、湖仓联动、易运维。
+            - listitem [ref=e748]: 字节（ByteHouse）、腾讯、京东、美团、拼多多都在从 ClickHouse 向 Doris/StarRocks 部分迁移。
+          - heading "3. 向量数据库 + 大模型" [level=3] [ref=e749]
+          - list [ref=e750]:
+            - listitem [ref=e751]:
+              - text: 2025 年起所有大厂都在重投向量数据库：字节
+              - strong [ref=e752]: Seldra
+              - text: 、腾讯
+              - strong [ref=e753]: VectorDB
+              - text: 、阿里
+              - strong [ref=e754]: RDS Vector / AnalyticDB Vector
+              - text: 、蚂蚁
+              - strong [ref=e755]: Kunlun
+              - text: 。
+            - listitem [ref=e756]: Milvus / Weaviate 等开源方案在非核心场景被广泛采用。
+          - heading "4. 湖仓一体" [level=3] [ref=e757]
+          - list [ref=e758]:
+            - listitem [ref=e759]:
+              - strong [ref=e760]: Iceberg / Hudi + 自研查询引擎
+              - text: 成为数仓新基建，字节 ByConity、腾讯 Data Lake、阿里 Paimon（已开源）都在做。
+          - heading "5. 云原生与 Serverless" [level=3] [ref=e761]
+          - list [ref=e762]:
+            - listitem [ref=e763]: PolarDB、TDSQL-C、TiDB Cloud、OceanBase 4.x 都已全面 Serverless 化。
+          - heading "6. 信创 + 国产化" [level=3] [ref=e764]
+          - list [ref=e765]:
+            - listitem [ref=e766]:
+              - text: 党政、金融、运营商场景强制国产化数据库，
+              - strong [ref=e767]: OceanBase、GaussDB（华为）、TiDB、达梦、人大金仓
+              - text: 是主要受益者。
+          - separator [ref=e768]
+          - heading "关键观察" [level=2] [ref=e769]
+          - list [ref=e770]:
+            - listitem [ref=e771]:
+              - strong [ref=e772]: 国内大厂的数据库"自主可控率"已经超过 70%
+              - text: （金融、电信行业更高）。
+            - listitem [ref=e773]:
+              - strong [ref=e774]: 自研主要发生在 OLTP 核心交易
+              - text: （OceanBase、TDSQL、ByteHouse），其他场景多采用开源或商业云服务。
+            - listitem [ref=e775]:
+              - strong [ref=e776]: 2025-2026 年最大的变化是 OLAP 的 StarRocks/Doris 化和向量数据库的全面落地
+              - text: 。
+          - separator [ref=e777]
+          - paragraph [ref=e778]:
+            - text: 由于当前网络搜索接口不可用，以上信息是基于公开资料与行业惯例的整理，建议对
+            - strong [ref=e779]: 最新具体落地数据
+            - text: （如某个数据库在某个公司的集群规模）通过厂商案例或公开财报进一步核实。如果您想深入了解
+            - strong [ref=e780]: 某家公司或某类数据库
+            - text: 的细节，我可以再做针对性拆解。
+    - generic [ref=e48]:
+      - textbox "描述要交给 Agent 的任务，Enter 发送，Shift+Enter 换行；支持粘贴上下文 / 文件路径 / 命令输出" [ref=e49]
+      - generic [ref=e50]:
+        - button "Open run details" [ref=e51] [cursor=pointer]:
+          - generic [ref=e52]: +
+        - generic [ref=e53]:
+          - combobox "Model" [ref=e54]:
+            - option "Claude Sonnet"
+            - option "MiniMax-M3" [selected]
+          - button "Send message" [disabled] [ref=e55]: ↑

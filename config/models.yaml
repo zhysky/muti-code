@@ -1,0 +1,56 @@
+models:
+  - id: claude-sonnet
+    agent: claude
+    runtime_model: sonnet
+    display_name: Claude Sonnet
+    provider: internal-anthropic
+    enabled: true
+
+  - id: minimax-m3-claude
+    agent: claude
+    runtime_model: MiniMax-M3
+    display_name: MiniMax-M3 via Anthropic Messages
+    provider: minimax-anthropic
+    enabled: true
+
+  - id: gpt-5-codex
+    agent: codex
+    runtime_model: gpt-5-codex
+    display_name: GPT-5 Codex
+    provider: internal-openai
+    enabled: true
+
+  - id: codex-qwen
+    agent: codex
+    runtime_model: qwen3-coder
+    display_name: Codex + Qwen Coder
+    provider: internal-codex-proxy
+    enabled: true
+
+  - id: minimax-m3-codex
+    agent: codex
+    runtime_model: MiniMax-M3
+    display_name: MiniMax-M3 via Responses API
+    provider: minimax-responses
+    enabled: true
+
+  - id: opencode-claude
+    agent: opencode
+    runtime_model: anthropic/claude-sonnet
+    display_name: OpenCode + Claude
+    provider: internal-opencode
+    enabled: true
+
+  - id: opencode-qwen
+    agent: opencode
+    runtime_model: qwen/qwen3-coder
+    display_name: OpenCode + Qwen
+    provider: internal-opencode
+    enabled: true
+
+  - id: opencode-minimax-m3
+    agent: opencode
+    runtime_model: minimaxi/MiniMax-M3
+    display_name: OpenCode + MiniMax-M3
+    provider: minimax-chat-completions
+    enabled: true

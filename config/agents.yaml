@@ -1,0 +1,27 @@
+agents:
+  - id: claude
+    name: Claude Code
+    driver: claude
+    enabled: true
+    default_model: minimax-m3-claude
+    permission_profiles:
+      - read-only
+      - workspace-write
+
+  - id: codex
+    name: Codex
+    driver: codex
+    enabled: true
+    default_model: minimax-m3-codex
+    permission_profiles:
+      - read-only
+      - workspace-write
+
+  - id: opencode
+    name: OpenCode
+    driver: opencode
+    enabled: true
+    default_model: opencode-minimax-m3
+    permission_profiles:
+      - read-only
+      - workspace-write

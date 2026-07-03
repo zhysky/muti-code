@@ -1,0 +1,30 @@
+profiles:
+  read-only:
+    description: 只读分析，不允许写文件
+    allow_write: false
+    allow_shell: false
+    allow_network: false
+
+  workspace-write:
+    description: 允许修改 workspace 内文件
+    allow_write: true
+    allow_shell: limited
+    allow_network: false
+
+  auto:
+    description: 自动执行低风险操作
+    allow_write: true
+    allow_shell: limited
+    allow_network: limited
+
+  dangerous-admin:
+    description: 高风险模式，默认禁用
+    enabled: false
+
+quota:
+  default_user_daily_runs: 50
+  default_group_daily_runs: 200
+  default_workspace_write_runs_per_day: 30
+  expensive_models:
+    - claude-opus
+    - gpt-5-codex-max
