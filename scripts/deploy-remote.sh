@@ -16,9 +16,45 @@ log() {
   printf '[deploy] %s\n' "$*"
 }
 
+case "$DEPLOY_READY_RETRIES" in
+  '' | *[!0-9]*)
+    printf '[deploy] DEPLOY_READY_RETRIES must be a non-negative integer, got: %s\n' "$DEPLOY_READY_RETRIES" >&2
+    exit 1
+    ;;
+esac
+
 quote() {
   printf '%q' "$1"
 }
+
+# Shared with the remote script via `declare -f` injection below; `log` is
+# resolved at call time, so each side keeps its own [deploy]/[remote] prefix.
+require_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    log "missing required command: $1" >&2
+    exit 1
+  fi
+}
+
+wait_for_url() {
+  url="$1"
+  label="$2"
+  log "waiting for ${label} at ${url} (retries: ${DEPLOY_READY_RETRIES}, delay: 2s)" >&2
+  if ! curl -fsS \
+    --retry "$DEPLOY_READY_RETRIES" \
+    --retry-all-errors \
+    --retry-connrefused \
+    --retry-delay 2 \
+    --connect-timeout 3 \
+    --max-time 10 \
+    "$url"; then
+    log "${label} did not become ready" >&2
+    return 1
+  fi
+}
+
+require_command ssh
+require_command curl
 
 remote_command=(
   "REMOTE_DIR=$(quote "$REMOTE_DIR")"
@@ -33,35 +69,13 @@ remote_command=(
 )
 
 log "deploying ${DEPLOY_REF} to ${REMOTE_HOST}:${REMOTE_DIR}"
-ssh -o BatchMode=yes "$REMOTE_HOST" "${remote_command[*]}" <<'REMOTE'
+{
+  declare -f require_command wait_for_url
+  cat <<'REMOTE'
 set -euo pipefail
 
 log() {
   printf '[remote] %s\n' "$*"
-}
-
-require_command() {
-  if ! command -v "$1" >/dev/null 2>&1; then
-    printf '[remote] missing required command: %s\n' "$1" >&2
-    exit 1
-  fi
-}
-
-wait_for_url() {
-  url="$1"
-  label="$2"
-  last_error=""
-  for attempt in $(seq 1 "$DEPLOY_READY_RETRIES"); do
-    if response="$(curl -fsS "$url" 2>&1)"; then
-      printf '%s' "$response"
-      return 0
-    fi
-    last_error="$response"
-    log "waiting for ${label} (${attempt}/${DEPLOY_READY_RETRIES})"
-    sleep 2
-  done
-  printf '[remote] %s did not become ready: %s\n' "$label" "$last_error" >&2
-  return 1
 }
 
 read_minimax_key_from_file() {
@@ -175,23 +189,7 @@ printf '%s\n' "$runtime" | grep -q '"minimax_ready":true'
 docker compose --env-file .env -f deploy/docker-compose.yml ps
 log "deployed $(git rev-parse --short HEAD)"
 REMOTE
-
-wait_for_url() {
-  url="$1"
-  label="$2"
-  last_error=""
-  for attempt in $(seq 1 "$DEPLOY_READY_RETRIES"); do
-    if response="$(curl -fsS "$url" 2>&1)"; then
-      printf '%s' "$response"
-      return 0
-    fi
-    last_error="$response"
-    log "waiting for ${label} (${attempt}/${DEPLOY_READY_RETRIES})"
-    sleep 2
-  done
-  printf '[deploy] %s did not become ready: %s\n' "$label" "$last_error" >&2
-  return 1
-}
+} | ssh -o BatchMode=yes "$REMOTE_HOST" "${remote_command[*]}"
 
 log "checking public endpoint ${PUBLIC_URL}"
 runtime="$(wait_for_url "${PUBLIC_URL}/api/runtime" public-runtime)"

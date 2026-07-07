@@ -60,6 +60,12 @@ bash scripts/deploy-remote.sh
 DEPLOY_REF=origin/my-branch PUBLIC_PORT=18443 bash scripts/deploy-remote.sh
 ```
 
+健康检查重试次数由 `DEPLOY_READY_RETRIES` 控制（默认 60，间隔 2 秒；每次请求上限 10 秒）。慢主机上可调大：
+
+```bash
+DEPLOY_READY_RETRIES=120 bash scripts/deploy-remote.sh
+```
+
 ## 权限配置
 
 - `read-only`：Gateway 拒绝写入，driver 不应产生 `file.changed`。
