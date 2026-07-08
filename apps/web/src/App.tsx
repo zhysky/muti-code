@@ -5,7 +5,7 @@ import { RunDrawer } from "./components/RunDrawer.js";
 import { Sidebar } from "./components/Sidebar.js";
 import { defaultModelForAgent } from "./lib/presentation.js";
 import { buildMessageStreamCurl, promptForRunDetails } from "./lib/run-details.js";
-import { applyAssistantStreamEvent, createAssistantStreamMessage, mergePersistedChatMessages } from "./lib/stream-state.js";
+import { applyAssistantStreamEvent, createAssistantStreamMessage, createPendingAssistantStreamMessage, mergePersistedChatMessages, shouldDisplayAssistantStreamEvent } from "./lib/stream-state.js";
 import type { Agent, AgentKind, ChatMessage, Message, Model, PermissionProfile, RuntimeStatus, Session, TimelineEvent } from "./types.js";
 
 const workspaceId = "sample-project";
@@ -122,6 +122,7 @@ export function App() {
     setError("");
     setDrawerOpen(false);
     setActiveRunStatus("running");
+    const pendingAssistantId = `assistant-pending-${Date.now()}`;
     setMessages((items) => [...items, {
       id: `user-${Date.now()}`,
       role: "user",
@@ -129,7 +130,7 @@ export function App() {
       agentKind: agent,
       model,
       createdAt: new Date().toISOString()
-    }]);
+    }, createPendingAssistantStreamMessage(pendingAssistantId)]);
 
     let assistantRunId = "";
     try {
@@ -153,13 +154,7 @@ export function App() {
       if (assistantRunId) {
         setMessages((items) => items.map((item) => item.runId === assistantRunId ? { ...item, status: "failed", error: message } : item));
       } else {
-        setMessages((items) => [...items, {
-          id: `assistant-error-${Date.now()}`,
-          role: "assistant",
-          content: "",
-          status: "failed",
-          error: message
-        }]);
+        setMessages((items) => items.map((item) => item.id === pendingAssistantId ? { ...item, status: "failed", error: message } : item));
       }
     }
   }
@@ -174,10 +169,18 @@ export function App() {
     if (event.type === "run.failed") setActiveRunStatus("failed");
     if (event.type === "run.aborted") setActiveRunStatus("aborted");
     if (event.type === "run.completed") setActiveRunStatus("completed");
-    if (event.type === "text.delta" || event.type === "message.completed" || event.type === "run.failed" || event.type === "run.aborted" || event.type === "run.completed") {
+    if (shouldDisplayAssistantStreamEvent(event)) {
       setMessages((items) => {
         const index = items.findIndex((item) => item.runId === event.runId);
+        const pendingIndex = index === -1
+          ? items.findIndex((item) => item.id.startsWith("assistant-pending-") && item.status === "streaming" && !item.runId)
+          : -1;
         if (index === -1) {
+          if (pendingIndex !== -1) {
+            const next = [...items];
+            next[pendingIndex] = applyAssistantStreamEvent({ ...next[pendingIndex], runId: event.runId }, event);
+            return next;
+          }
           return [...items, applyAssistantStreamEvent(createAssistantStreamMessage(event.runId), event)];
         }
         const next = [...items];

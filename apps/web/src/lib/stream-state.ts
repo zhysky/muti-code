@@ -1,11 +1,40 @@
 import type { ChatMessage, TimelineEvent } from "../types.js";
 
+const assistantStreamEventTypes = new Set<TimelineEvent["type"]>([
+  "run.started",
+  "text.delta",
+  "message.completed",
+  "tool.started",
+  "tool.completed",
+  "file.changed",
+  "command.started",
+  "command.completed",
+  "run.failed",
+  "run.aborted",
+  "run.completed"
+]);
+
+export function shouldDisplayAssistantStreamEvent(event: TimelineEvent): boolean {
+  return assistantStreamEventTypes.has(event.type);
+}
+
 export function createAssistantStreamMessage(runId: string): Required<Pick<ChatMessage, "id" | "role" | "content" | "runId" | "status" | "seenSeq">> & ChatMessage {
   return {
     id: `assistant-${runId}`,
     role: "assistant",
     content: "",
     runId,
+    status: "streaming",
+    seenSeq: new Set<number>()
+  };
+}
+
+export function createPendingAssistantStreamMessage(id: string): ChatMessage {
+  return {
+    id,
+    role: "assistant",
+    content: "",
+    runId: null,
     status: "streaming",
     seenSeq: new Set<number>()
   };

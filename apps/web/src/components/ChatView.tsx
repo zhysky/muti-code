@@ -1,5 +1,5 @@
 import { ArrowUp, Plus } from "lucide-react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { buildToolActivities } from "../lib/tool-activity.js";
 import { productCopy } from "../lib/presentation.js";
 import type { ChatMessage, Model, TimelineEvent } from "../types.js";
@@ -40,9 +40,18 @@ export function ChatView({
   onSubmit
 }: ChatViewProps) {
   const hasMessages = messages.length > 0;
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const latestMessage = messages[messages.length - 1];
+
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    scroller.scrollTo({ top: scroller.scrollHeight, behavior: "smooth" });
+  }, [events.length, latestMessage?.content, latestMessage?.status, messages.length]);
+
   return (
     <section className={hasMessages ? "chatPane hasMessages" : "chatPane emptyChat"}>
-      <div className="messageScroller">
+      <div className="messageScroller" ref={scrollerRef}>
         {loading && <p className="emptyState">加载中...</p>}
         {!loading && !messages.length && (
           <div className="welcomePanel">
